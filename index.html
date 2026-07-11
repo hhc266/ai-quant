@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIQuant · A股量化策略看板</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #fff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --up: #c5332b;
+      --down: #0b8063;
+      --accent: #2458d3;
+      --shadow: 0 10px 30px rgba(15,23,42,.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 20px 60px;
+    }
+    header { margin-bottom: 36px; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 4vw, 36px);
+      letter-spacing: 0;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, box-shadow .15s ease;
+      border-left: 5px solid var(--accent, #2458d3);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(15,23,42,.12);
+    }
+    .card-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 8px 0 6px;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .card-tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #eef2ff;
+      color: var(--accent);
+    }
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 540px) {
+      main { padding: 28px 16px 40px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>AIQuant 量化策略看板</h1>
+    <p class="subtitle">A股量化交易策略可视化集合 · 数据每日自动更新</p>
+  </header>
+  <section class="grid" id="grid"></section>
+  <footer>数据来源：Tushare Pro · 仅供学习研究，不构成投资建议</footer>
+</main>
+<script>
+// ====== 子站点配置（新增 TASK 只需在此追加一条） ======
+const sites = [
+  {
+    num: "01",
+    title: "K线行情看板",
+    desc: "中芯国际(688981)近一年日K线、成交量与摘要指标，支持鼠标悬停查看 OHLC",
+    url: "TASK1/index.html",
+    tag: "行情",
+    accent: "#c5332b"
+  },
+  {
+    num: "02",
+    title: "技术指标分析",
+    desc: "MACD、RSI、KDJ、布林带四大技术指标可视化图表与最新信号解读",
+    url: "TASK2/index.html",
+    tag: "指标",
+    accent: "#2563eb"
+  },
+  {
+    num: "03",
+    title: "双均线策略回测",
+    desc: "5只A股标的双均线交叉策略交互式回测看板，支持参数调整与实时计算",
+    url: "TASK3/index.html",
+    tag: "回测",
+    accent: "#16a34a"
+  },
+  {
+    num: "04",
+    title: "海龟交易法则",
+    desc: "通道突破+ATR止损策略回测，含参数敏感性与多标的对比",
+    url: "TASK4/index.html",
+    tag: "策略",
+    accent: "#ea580c"
+  },
+];
+
+document.getElementById("grid").innerHTML = sites.map(s => `
+  <a class="card" href="${s.url}" style="--accent:${s.accent}">
+    <div class="card-num">TASK ${s.num}</div>
+    <div class="card-title">${s.title}</div>
+    <div class="card-desc">${s.desc}</div>
+    <span class="card-tag">${s.tag}</span>
+  </a>
+`).join("");
+</script>
+</body>
+</html>

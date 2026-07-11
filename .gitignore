@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Node.js (TASK3/site/ 是 Next.js 项目，不需要部署)
+node_modules/
+TASK3/site/
+TASK3/.next/
+TASK3/.wrangler/
+
+# 编辑器/系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# 工具缓存
+.pnpm-store/
+.agents/
+.workbuddy/
+
+# CI 生成的中间产物（不提交，每次 CI 重新生成）
+TASK3/data/processed/
+TASK3/outputs/
+TASK4/data/
+TASK4/outputs/
+
+# 保留以下文件（CI 需要追踪更新）：
+# - TASK3/data/raw/        ← TASK4 构建依赖的数据源
+# - TASK3/assets/          ← 看板运行所需的 CSS/JS/dashboard-data.js

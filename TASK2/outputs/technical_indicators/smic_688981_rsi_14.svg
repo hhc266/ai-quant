@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="680" viewBox="0 0 1280 680">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="88" y="34" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937">SMIC 688981.SH RSI(14)</text>
+<text x="88" y="59" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">Relative Strength Index with 70/30 reference lines</text>
+<text x="18" y="342" font-family="Arial, sans-serif" font-size="12" fill="#6b7280" transform="rotate(-90 18,342)">RSI</text>
+<line x1="88" x2="1244" y1="602.00" y2="602.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="606.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">0.00</text>
+<line x1="88" x2="1244" y1="498.00" y2="498.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="502.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">20.00</text>
+<line x1="88" x2="1244" y1="446.00" y2="446.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="450.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">30.00</text>
+<line x1="88" x2="1244" y1="342.00" y2="342.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="346.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">50.00</text>
+<line x1="88" x2="1244" y1="238.00" y2="238.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="242.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">70.00</text>
+<line x1="88" x2="1244" y1="186.00" y2="186.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="190.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">80.00</text>
+<line x1="88" x2="1244" y1="82.00" y2="82.00" stroke="#e5e7eb" stroke-width="1"/>
+<text x="78" y="86.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">100.00</text>
+<line x1="88.00" x2="88.00" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="88.00" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2025-07-04</text>
+<line x1="279.85" x2="279.85" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="279.85" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2025-08-28</text>
+<line x1="471.69" x2="471.69" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="471.69" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2025-11-07</text>
+<line x1="668.46" x2="668.46" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="668.46" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2026-01-06</text>
+<line x1="860.31" x2="860.31" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="860.31" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2026-03-10</text>
+<line x1="1052.15" x2="1052.15" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="1052.15" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2026-05-08</text>
+<line x1="1244.00" x2="1244.00" y1="82" y2="602" stroke="#f3f4f6" stroke-width="1"/>
+<text x="1244.00" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">2026-07-03</text>
+<line x1="88" x2="1244" y1="602" y2="602" stroke="#9ca3af" stroke-width="1"/>
+<line x1="88" x2="88" y1="82" y2="602" stroke="#9ca3af" stroke-width="1"/>
+<line x1="88" x2="1244" y1="238.00" y2="238.00" stroke="#dc2626" stroke-width="1.3" stroke-dasharray="6 5"/>
+<text x="1238" y="231.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#dc2626">70 overbought</text>
+<line x1="88" x2="1244" y1="446.00" y2="446.00" stroke="#059669" stroke-width="1.3" stroke-dasharray="6 5"/>
+<text x="1238" y="439.00" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#059669">30 oversold</text>
+<line x1="88" x2="112" y1="664" y2="664" stroke="#2563eb" stroke-width="2.2"/>
+<text x="118" y="668" font-family="Arial, sans-serif" font-size="12" fill="#374151">RSI14</text>
+<path d="M156.87,214.25 L161.79,196.71 L166.71,235.93 L171.63,236.23 L176.54,285.96 L181.46,306.52 L186.38,333.03 L191.30,301.79 L196.22,303.36 L201.14,290.26 L206.06,295.03 L210.98,373.01 L215.90,367.06 L220.82,337.76 L225.74,335.24 L230.66,320.79 L235.57,283.87 L240.49,277.45 L245.41,335.07 L250.33,294.80 L255.25,315.42 L260.17,214.68 L265.09,225.51 L270.01,254.80 L274.93,251.13 L279.85,181.60 L284.77,223.77 L289.69,307.68 L294.60,303.54 L299.52,276.90 L304.44,288.75 L309.36,287.70 L314.28,282.63 L319.20,251.92 L324.12,236.04 L329.04,242.20 L333.96,218.96 L338.88,222.17 L343.80,204.70 L348.71,211.75 L353.63,226.89 L358.55,215.52 L363.47,204.20 L368.39,214.70 L373.31,293.48 L378.23,262.71 L383.15,312.13 L388.07,303.29 L392.99,314.67 L397.91,339.97 L402.83,337.02 L407.74,316.71 L412.66,318.73 L417.58,311.84 L422.50,287.01 L427.42,285.20 L432.34,297.10 L437.26,295.62 L442.18,325.08 L447.10,350.64 L452.02,371.46 L456.94,373.15 L461.86,373.70 L466.77,339.96 L471.69,356.49 L476.61,368.64 L481.53,381.40 L486.45,367.39 L491.37,343.34 L496.29,372.83 L501.21,375.93 L506.13,373.38 L511.05,383.76 L515.97,379.43 L520.89,402.70 L525.80,411.17 L530.72,409.46 L535.64,398.73 L540.56,398.73 L545.48,388.65 L550.40,379.49 L555.32,391.35 L560.24,402.63 L565.16,365.76 L570.08,370.82 L575.00,338.34 L579.91,347.32 L584.83,347.43 L589.75,374.96 L594.67,339.53 L599.59,374.70 L604.51,393.08 L609.43,365.41 L614.35,369.62 L619.27,360.58 L624.19,299.93 L629.11,305.53 L634.03,280.25 L638.94,283.89 L643.86,295.01 L648.78,291.79 L653.70,270.45 L658.62,299.64 L663.54,252.63 L668.46,242.70 L673.38,263.56 L678.30,262.53 L683.22,277.37 L688.14,291.42 L693.06,332.85 L697.97,325.39 L702.89,325.90 L707.81,303.31 L712.73,321.93 L717.65,352.58 L722.57,309.41 L727.49,313.27 L732.41,331.42 L737.33,358.63 L742.25,339.12 L747.17,303.56 L752.09,354.03 L757.00,349.51 L761.92,388.99 L766.84,395.07 L771.76,402.16 L776.68,419.37 L781.60,410.35 L786.52,388.49 L791.44,376.47 L796.36,385.06 L801.28,369.50 L806.20,366.01 L811.11,375.42 L816.03,371.94 L820.95,365.86 L825.87,381.66 L830.79,403.10 L835.71,433.31 L840.63,443.28 L845.55,440.32 L850.47,442.99 L855.39,452.05 L860.31,419.47 L865.23,420.91 L870.14,429.80 L875.06,412.95 L879.98,389.43 L884.90,413.59 L889.82,404.71 L894.74,410.79 L899.66,442.15 L904.58,468.06 L909.50,449.32 L914.42,437.94 L919.34,458.12 L924.26,448.44 L929.17,459.10 L934.09,469.65 L939.01,433.83 L943.93,454.04 L948.85,462.25 L953.77,409.37 L958.69,351.03 L963.61,363.07 L968.53,350.80 L973.45,354.14 L978.37,345.17 L983.29,322.03 L988.20,319.49 L993.12,309.41 L998.04,285.26 L1002.96,291.76 L1007.88,288.02 L1012.80,313.51 L1017.72,270.16 L1022.64,235.28 L1027.56,266.07 L1032.48,283.16 L1037.40,246.32 L1042.31,226.43 L1047.23,217.39 L1052.15,267.97 L1057.07,257.08 L1061.99,262.32 L1066.91,263.55 L1071.83,302.13 L1076.75,294.74 L1081.67,308.02 L1086.59,299.35 L1091.51,225.36 L1096.43,277.64 L1101.34,260.95 L1106.26,197.36 L1111.18,236.08 L1116.10,251.74 L1121.02,234.03 L1125.94,297.17 L1130.86,324.91 L1135.78,324.78 L1140.70,319.68 L1145.62,316.61 L1150.54,346.81 L1155.46,366.48 L1160.37,345.05 L1165.29,352.42 L1170.21,343.91 L1175.13,354.19 L1180.05,330.35 L1184.97,332.07 L1189.89,313.21 L1194.81,290.88 L1199.73,274.56 L1204.65,295.10 L1209.57,264.03 L1214.49,249.74 L1219.40,289.83 L1224.32,283.02 L1229.24,260.96 L1234.16,281.95 L1239.08,325.74 L1244.00,339.85" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
