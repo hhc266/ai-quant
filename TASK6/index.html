@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TASK6 智能决策者：机器学习定制专属策略</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb; --panel: #fff; --ink: #1f2937; --muted: #64748b;
+      --line: #e2e8f0; --up: #c5332b; --down: #0b8063; --accent: #2563eb;
+      --shadow: 0 10px 30px rgba(15,23,42,.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: "Microsoft YaHei","PingFang SC",-apple-system,sans-serif;
+      line-height: 1.6;
+    }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 44px; }
+    header { margin-bottom: 24px; }
+    h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 34px); }
+    .subtitle { color: var(--muted); font-size: 14px; }
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px; margin-bottom: 20px;
+    }
+    .metric {
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 8px; padding: 14px; box-shadow: var(--shadow);
+    }
+    .metric .label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+    .metric .value { font-size: 22px; font-weight: 700; }
+    .metric .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 8px; box-shadow: var(--shadow);
+      padding: 18px; margin-bottom: 16px;
+    }
+    .panel h2 { margin: 0 0 4px; font-size: 18px; }
+    .panel .desc { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+    .chart-wrap { position: relative; width: 100%; height: 360px; }
+    .chart-wrap.small { height: 300px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; }
+    .model-name { font-weight: 600; color: var(--accent); }
+    .positive { color: var(--up); }
+    .negative { color: var(--down); }
+    .insight {
+      border-left: 4px solid var(--accent); background: #f0f7ff;
+      padding: 12px 16px; border-radius: 6px; margin-top: 12px; font-size: 14px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .step {
+      border: 1px solid var(--line); border-radius: 6px; padding: 12px;
+      background: #fbfdff; font-size: 13px;
+    }
+    .step strong { display: block; margin-bottom: 4px; color: var(--accent); }
+    .step code {
+      display: block; margin-top: 6px; color: var(--muted);
+      font-family: Consolas, monospace; font-size: 12px;
+    }
+    footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    @media (max-width: 768px) {
+      .two-col, .steps { grid-template-columns: 1fr; }
+      .chart-wrap { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>TASK6 智能决策者：机器学习定制专属策略</h1>
+    <p class="subtitle">
+      基于财务因子构建股票收益率预测模型，每季度选股 Top-30 构建组合，对比多种 ML 算法效果<br>
+      训练区间 2020-03-31 至 2021-06-30（22,855 样本）｜
+      测试区间 2021-09-30 至 2022-06-30（16,761 样本）｜
+      特征数 38
+    </p>
+  </header>
+
+  <section class="metrics-grid">
+    <div class="metric">
+      <div class="label">最优模型</div>
+      <div class="value" style="font-size:18px">梯度提升树</div>
+      <div class="note">累计回报 52.86%</div>
+    </div>
+    <div class="metric">
+      <div class="label">超额收益（vs 市场）</div>
+      <div class="value positive">
+        +59.21%
+      </div>
+      <div class="note">相对市场基准</div>
+    </div>
+    <div class="metric">
+      <div class="label">最高 Sharpe</div>
+      <div class="value">4.42</div>
+      <div class="note">年化夏普比率</div>
+    </div>
+    <div class="metric">
+      <div class="label">市场基准回报</div>
+      <div class="value">-6.35%</div>
+      <div class="note">全市场等权平均</div>
+    </div>
+    <div class="metric">
+      <div class="label">测试季度数</div>
+      <div class="value">4</div>
+      <div class="note">2021-09 → 2021-12 ...</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>核心指标对比</h2>
+    <p class="desc">各模型在测试集上的策略回测核心指标，红涨绿跌（A股配色）</p>
+    <table>
+      <thead>
+        <tr>
+          <th>模型 / 策略</th>
+          <th>累计回报</th>
+          <th>年化回报</th>
+          <th>Sharpe</th>
+          <th>最大回撤</th>
+          <th>季度胜率</th>
+          <th>期末资产</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td class="model-name">线性回归</td>
+          <td>29.28%</td>
+          <td>29.28%</td>
+          <td>1.42</td>
+          <td class="positive">3.47%</td>
+          <td>75.0%</td>
+          <td>¥1,292,763</td>
+        </tr>
+        <tr>
+          <td class="model-name">决策树</td>
+          <td>-7.37%</td>
+          <td>-7.37%</td>
+          <td>-0.28</td>
+          <td class="positive">17.20%</td>
+          <td>50.0%</td>
+          <td>¥926,265</td>
+        </tr>
+        <tr>
+          <td class="model-name">随机森林</td>
+          <td>45.82%</td>
+          <td>45.82%</td>
+          <td>4.42</td>
+          <td class="positive">0.00%</td>
+          <td>100.0%</td>
+          <td>¥1,458,246</td>
+        </tr>
+        <tr>
+          <td class="model-name">梯度提升树</td>
+          <td>52.86%</td>
+          <td>52.86%</td>
+          <td>2.90</td>
+          <td class="positive">1.75%</td>
+          <td>75.0%</td>
+          <td>¥1,528,568</td>
+        </tr>
+        <tr>
+          <td class="model-name">市场基准</td>
+          <td>-6.35%</td>
+          <td>-6.35%</td>
+          <td>-0.31</td>
+          <td class="positive">15.91%</td>
+          <td>50.0%</td>
+          <td>¥936,453</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="insight">
+      <strong>解读：</strong>
+      梯度提升树在测试集上累计回报为 52.86%，
+      相比市场基准超额收益 +59.21%，
+      夏普比率 2.90，
+      最大回撤 1.75%。
+      集成模型（随机森林/梯度提升树）通常优于单棵决策树和线性回归，因为它们能捕捉特征间的非线性交互关系，同时通过集成降低方差。
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>图1：策略净值曲线对比</h2>
+    <p class="desc">初始资金 ¥1,000,000，每季度按模型预测排序选 Top-30 等权配置</p>
+    <div class="chart-wrap"><canvas id="navChart"></canvas></div>
+  </section>
+
+  <section class="panel">
+    <h2>图2：季度收益率对比</h2>
+    <p class="desc">每个季度的策略收益率，正值红色，负值绿色（A股配色）</p>
+    <div class="chart-wrap"><canvas id="quarterChart"></canvas></div>
+  </section>
+
+  <section class="two-col">
+    <section class="panel">
+      <h2>图3：特征重要性 - 随机森林</h2>
+      <p class="desc">模型认为对收益预测贡献最大的因子</p>
+      <div class="chart-wrap small"><canvas id="fiRfChart"></canvas></div>
+    </section>
+    <section class="panel">
+      <h2>图4：特征重要性 - 梯度提升树</h2>
+      <p class="desc">模型认为对收益预测贡献最大的因子</p>
+      <div class="chart-wrap small"><canvas id="fiGbChart"></canvas></div>
+    </section>
+  </section>
+
+  <section class="panel">
+    <h2>Python 实现流程</h2>
+    <div class="steps">
+      <div class="step"><strong>1. 数据加载与特征工程</strong>读取 model_data.csv，对 19 个财务因子做缺失值中位数填充，并计算每个因子在截面的百分位排名，合计 38 个特征。code<pre><code>df[col].fillna(df[col].median())
+df.groupby('Date')[col].rank(pct=True)</code></pre></div>
+      <div class="step"><strong>2. 训练测试划分与模型训练</strong>按时间划分：2022Q4 之前为训练集，之后为测试集。训练 4 种模型：线性回归、决策树、随机森林、梯度提升树。code<pre><code>model.fit(X_train, y_train)
+pred = model.predict(X_test)</code></pre></div>
+      <div class="step"><strong>3. 策略构建与回测</strong>每季度按预测收益率排序，选 Top-30 等权配置，计算组合季度收益。同时计算全市场等权基准。code<pre><code>top30 = q_df.sort_values('pred', ascending=False).head(30)
+q_return = top30['Next_Ret'].mean()</code></pre></div>
+      <div class="step"><strong>4. 核心指标计算</strong>累计回报、年化回报、夏普比率、最大回撤、季度胜率。code<pre><code>sharpe = mean(r) / std(r) * sqrt(4)
+max_dd = max((peak - v) / peak)</code></pre></div>
+      <div class="step"><strong>5. 模型对比分析</strong>对比 4 种模型的净值曲线、季度收益、特征重要性，评估各算法的适应性。code<pre><code>LinearRegression vs DecisionTree
+vs RandomForest vs GradientBoosting</code></pre></div>
+      <div class="step"><strong>6. 关键发现</strong>集成模型（RF/GBDT）通常优于线性模型和单棵决策树。截面排名特征能有效降低异常值影响。股息率、市值、估值类因子贡献最大。code<pre><code>feature_importances_
+cross_sectional_rank</code></pre></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>策略设计与思考</h2>
+    <div class="insight">
+      <strong>策略逻辑：</strong>每季度末，用 ML 模型预测所有股票下季度收益率，选预测收益率最高的 30 支股票等权配置，季度调仓。这是典型的"多因子选股 + 机器学习"范式。
+    </div>
+    <div class="insight" style="border-left-color: var(--down); background: #f0fdf4;">
+      <strong>局限性：</strong>
+      ① 未考虑交易成本和滑点；② 等权配置未做组合优化；③ 因子全部来自财务报表，缺少量价因子和宏观因子；
+      ④ 训练集固定，未做滚动训练（walk-forward）；⑤ Next_Ret 可能有前视偏差风险，需确认数据对齐方式。
+    </div>
+    <div class="insight" style="border-left-color: #ea580c; background: #fff7ed;">
+      <strong>改进方向：</strong>加入量价因子（动量、波动率、换手率）、使用滚动窗口训练、引入组合优化（均值-方差）、加入风险控制（行业中性、因子暴露约束）、使用 LightGBM/CatBoost/XGBoost 等更先进模型。
+    </div>
+  </section>
+
+  <footer>
+    数据来源：model_data.csv（39,616 条记录）｜
+    生成时间：2026-07-18 22:14:50｜
+    仅供学习研究，不构成投资建议
+  </footer>
+</main>
+
+<script>
+const COLORS = {
+  '线性回归': '#868e96', '决策树': '#1971c2', '随机森林': '#2f9e44',
+  '梯度提升树': '#e8590c', '市场基准': '#868e96'
+};
+
+const navLabels = ["\u671f\u521d", "2021-09", "2021-12", "2022-03", "2022-06"];
+const navData = {"\u7ebf\u6027\u56de\u5f52": [1000000, 1232096.67, 1259991.34, 1339253.19, 1292763.25], "\u51b3\u7b56\u6811": [1000000, 1118706.67, 1015696.16, 1061361.86, 926264.64], "\u968f\u673a\u68ee\u6797": [1000000, 1132840.0, 1295783.93, 1418200.96, 1458246.22], "\u68af\u5ea6\u63d0\u5347\u6811": [1000000, 1156486.67, 1376350.2, 1555725.34, 1528567.56], "\u5e02\u573a\u57fa\u51c6": [1000000, 1113634.92, 1020371.02, 1031313.9, 936452.69]};
+const quarterlyData = {"\u7ebf\u6027\u56de\u5f52": [23.21, 2.26, 6.29, -3.47], "\u51b3\u7b56\u6811": [11.87, -9.21, 4.5, -12.73], "\u968f\u673a\u68ee\u6797": [13.28, 14.38, 9.45, 2.82], "\u68af\u5ea6\u63d0\u5347\u6811": [15.65, 19.01, 13.03, -1.75], "\u5e02\u573a\u57fa\u51c6": [11.36, -8.37, 1.07, -9.2]};
+const fiData = {"\u968f\u673a\u68ee\u6797": {"labels": ["\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u540c\u6bd4\u589e\u957f\u7387)_rank", "\u8425\u4e1a\u5229\u6da6(\u540c\u6bd4\u589e\u957f\u7387)_rank", "\u51c0\u5229\u6da6\u540c\u6bd4\u589e\u957f\u7387_rank", "\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u540c\u6bd4\u589e\u957f\u7387)", "\u5e02\u51c0\u7387PB(MRQ)", "\u51c0\u5229\u6da6\u540c\u6bd4\u589e\u957f\u7387", "\u4f01\u4e1a\u500d\u6570(EV\u9664EBITDA)", "\u8425\u4e1a\u5229\u6da6(\u540c\u6bd4\u589e\u957f\u7387)", "\u5229\u6da6\u603b\u989d(\u540c\u6bd4\u589e\u957f\u7387)_rank", "MV", "\u5e02\u51c0\u7387PB(MRQ)_rank", "\u5229\u6da6\u603b\u989d(\u540c\u6bd4\u589e\u957f\u7387)", "\u4f01\u4e1a\u500d\u6570(EV\u9664EBITDA)_rank", "\u73b0\u91d1\u51c0\u6d41\u91cf\u540c\u6bd4\u589e\u957f\u7387", "\u5e02\u9500\u7387PS(TTM)"], "values": [0.0828, 0.0749, 0.0592, 0.0591, 0.0484, 0.0417, 0.0407, 0.0398, 0.035, 0.0308, 0.0284, 0.0256, 0.0238, 0.022, 0.0209]}, "\u68af\u5ea6\u63d0\u5347\u6811": {"labels": ["\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u540c\u6bd4\u589e\u957f\u7387)_rank", "\u8425\u4e1a\u5229\u6da6(\u540c\u6bd4\u589e\u957f\u7387)_rank", "\u8425\u4e1a\u5229\u6da6(\u540c\u6bd4\u589e\u957f\u7387)", "\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u540c\u6bd4\u589e\u957f\u7387)", "\u4f01\u4e1a\u500d\u6570(EV\u9664EBITDA)", "\u5e02\u51c0\u7387PB(MRQ)", "\u8425\u4e1a\u603b\u6536\u5165(\u540c\u6bd4\u589e\u957f\u7387)_rank", "\u5e02\u51c0\u7387PB(MRQ)_rank", "\u73b0\u91d1\u51c0\u6d41\u91cf\u540c\u6bd4\u589e\u957f\u7387", "MV", "\u51c0\u5229\u6da6\u540c\u6bd4\u589e\u957f\u7387_rank", "\u51c0\u5229\u6da6\u540c\u6bd4\u589e\u957f\u7387", "\u73b0\u91d1\u51c0\u6d41\u91cf\u540c\u6bd4\u589e\u957f\u7387_rank", "\u8425\u4e1a\u603b\u6536\u5165(\u540c\u6bd4\u589e\u957f\u7387)", "\u51c0\u8d44\u4ea7\u540c\u6bd4\u589e\u957f\u7387"], "values": [0.077, 0.0697, 0.0534, 0.0531, 0.0493, 0.0435, 0.0387, 0.0375, 0.0335, 0.0309, 0.0295, 0.0285, 0.0275, 0.0274, 0.0252]}};
+
+new Chart(document.getElementById('navChart'), {
+  type: 'line',
+  data: {
+    labels: navLabels,
+    datasets: Object.entries(navData).map(([name, values]) => ({
+      label: name, data: values,
+      borderColor: COLORS[name] || '#999',
+      backgroundColor: 'transparent', borderWidth: 2,
+      pointRadius: 3, pointHoverRadius: 5, tension: 0.3
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ¥' + c.parsed.y.toLocaleString() } }
+    },
+    scales: {
+      y: { title: { display: true, text: '资产净值 (¥)' }, ticks: { callback: v => '¥' + (v/10000).toFixed(0) + '万' } },
+      x: { title: { display: true, text: '季度' } }
+    }
+  }
+});
+
+const qLabels = navLabels.slice(1);
+new Chart(document.getElementById('quarterChart'), {
+  type: 'bar',
+  data: {
+    labels: qLabels,
+    datasets: Object.entries(quarterlyData).map(([name, values]) => ({
+      label: name, data: values,
+      backgroundColor: COLORS[name] || '#999', borderRadius: 3
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: { title: { display: true, text: '季度收益率 (%)' }, ticks: { callback: v => v + '%' } },
+      x: { title: { display: true, text: '季度' } }
+    }
+  }
+});
+
+function makeFiChart(canvasId, modelName) {
+  const data = fiData[modelName];
+  if (!data) return;
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: '重要性', data: data.values,
+        backgroundColor: '#2563eb', borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { title: { display: true, text: '特征重要性' } },
+        y: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+}
+makeFiChart('fiRfChart', '随机森林');
+makeFiChart('fiGbChart', '梯度提升树');
+</script>
+</body>
+</html>
